@@ -1,5 +1,4 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
-import Script from "next/script";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -11,62 +10,112 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link
-            href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
-            rel="stylesheet"
+          {/*  Google Tag Manager  */}
+          <script
+            defer
+            dangerouslySetInnerHTML={{
+              __html: `
+              (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+                var f = d.getElementsByTagName(s)[0],
+                  j = d.createElement(s),
+                  dl = l != "dataLayer" ? "&l=" + l : "";
+                j.async = true;
+                j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+                f.parentNode.insertBefore(j, f);
+              })(window, document, "script", "dataLayer", "GTM-TGXWKQ2");
+              `,
+            }}
           />
-          <link
-            rel="stylesheet"
-            href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
+          {/*  End Google Tag Manager  */}
+          {/* Google tag (gtag.js)  */}
+
+          <script
+            defer
+            src="https://www.googletagmanager.com/gtag/js?id=G-C0BTW9EXDK"
+          />
+          <script
+            defer
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-C0BTW9EXDK');
+              `,
+            }}
           />
         </Head>
+
+        {/* <Script
+          strategy="beforeInteractive"
+          src={`${process.env.NEXT_PUBLIC_URL}/plugins/jquery/jquery.min.js`}
+        />
+        <Script
+          strategy="beforeInteractive"
+          src={`${process.env.NEXT_PUBLIC_URL}/plugins/bootstrap/js/bootstrap.bundle.min.js`}
+        />
+        <Script
+          strategy="beforeInteractive"
+          src={`${process.env.NEXT_PUBLIC_URL}/dist/js/adminlte.js`}
+        /> */}
         <body className="hold-transition sidebar-mini layout-fixed">
+          {/*  Google Tag Manager (noscript)  */}
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-TGXWKQ2"
+              height="0"
+              width="0"
+              title="googletagmanager"
+              style={{ display: "none", visibility: "hidden" }}
+            ></iframe>
+          </noscript>
+          {/*  End Google Tag Manager (noscript)  */}
           <Main />
           <NextScript />
+          {/* <script
+            dangerouslySetInnerHTML={{
+              __html: `
+          (function (w, d, s, c, r, a, m) {
+            w["KiwiObject"] = r;
+            w[r] =
+              w[r] ||
+              function () {
+                (w[r].q = w[r].q || []).push(arguments);
+              };
+            w[r].l = 1 * new Date();
+            a = d.createElement(s);
+            m = d.getElementsByTagName(s)[0];
+            a.async = 1;
+            a.src = c;
+            m.parentNode.insertBefore(a, m);
+          })(
+            window,
+            document,
+            "script",
+            "https://app.interakt.ai/kiwi-sdk/kiwi-sdk-17-prod-min.js?v=" +
+              new Date().getTime(),
+            "kiwi"
+          );
+          window.addEventListener("load", function () {
+            kiwi.init("", "Ch1CAu6SCWM5ilsGbMxFEwd4qWTdvtby", {});
+          });
+        `,
+            }}
+          /> */}
           <script
+            defer
             src={`${process.env.NEXT_PUBLIC_URL}/plugins/jquery/jquery.min.js`}
           />
           <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/jquery-ui/jquery-ui.min.js`}
-          />
-          <script
+            defer
             src={`${process.env.NEXT_PUBLIC_URL}/plugins/bootstrap/js/bootstrap.bundle.min.js`}
           />
           <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/chart.js/Chart.min.js`}
+            defer
+            src={`${process.env.NEXT_PUBLIC_URL}/dist/js/adminlte.js`}
           />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/sparklines/sparkline.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/jqvmap/jquery.vmap.min.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/jqvmap/maps/jquery.vmap.usa.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/jquery-knob/jquery.knob.min.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/moment/moment.min.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/daterangepicker/daterangepicker.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/summernote/summernote-bs4.min.js`}
-          />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js`}
-          />
-          <script src={`${process.env.NEXT_PUBLIC_URL}/dist/js/adminlte.js`} />
-          <script
-            src={`${process.env.NEXT_PUBLIC_URL}/dist/js/pages/dashboard.js`}
-          />
-          <script src={`${process.env.NEXT_PUBLIC_URL}/dist/js/demo.js`} />
         </body>
       </Html>
     );

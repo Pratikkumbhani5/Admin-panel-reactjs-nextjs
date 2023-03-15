@@ -1,51 +1,56 @@
 import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
 
 export default withAuth({
   callbacks: {
     authorized({ req, token }) {
-      // console.log(req.nextUrl.pathname, "path");
-      // console.log(token);
+      const getTimestampInSeconds = () => {
+        return Math.floor(Date.now() / 1000);
+      };
 
-      const AdminRoles = ["/users", "/add-user"];
-      const DynamicRoute = ["/edit/"];
-      const UserRoles = ["/user"];
-
-      // `/users` requires admin role
-      for (let i = 0; i < AdminRoles.length; i++) {
-        if (req.nextUrl.pathname === AdminRoles[i]) {
-          // console.log(AdminRoles, "AdminRoles");
-          return token?.role === "SuperAdmin";
+      // console.log(token, "mw");
+      if (token) {
+        if (token.expTime <= getTimestampInSeconds()) {
+          // console.log("ON");
+          return false;
         }
       }
 
-      // `/user` requires admin role
-      // for (let i = 0; i < UserRoles.length; i++) {
-      //   if (req.nextUrl.pathname === UserRoles[i]) {
-      //     console.log(UserRoles, "UserRoles");
-      //     return token?.role === "User";
-      //   }
-      // }
-
-      if (req.nextUrl.pathname === "/user") {
-        return token?.role === "User" || token?.role === "SuperAdmin";
+      if (req.nextUrl.pathname === "/admin/dashboard") {
+        return (
+          token?.role === 1 ||
+          token?.role === 2 ||
+          token?.role === 3 ||
+          token?.role === 4
+        );
       }
 
-      // for (let i = 0; i < DynamicRoute.length; i++) {
-      //   if (req.nextUrl.pathname.includes(DynamicRoute[i])) {
-      //     console.log(DynamicRoute, "IN");
-      //     return token?.role === "SuperAdmin";
-      //   } else {
-      //     console.log("ELSE");
-      //     return NextResponse.redirect(new URL("/", req.url));
-      //   }
-      // }
+      if (
+        req.nextUrl.pathname === "/admin/add-blog" ||
+        req.nextUrl.pathname === "/admin/blog" ||
+        req.nextUrl.pathname.match(/^\/admin\/view-blog\/.+$/) ||
+        req.nextUrl.pathname.match(/^\/admin\/edit-blog\/.+$/)
+      ) {
+        return token?.role === 1 || token?.role === 2 || token?.role === 3;
+      }
 
-      // if (req.nextUrl.pathname === ["/user"]) {
-      //   return token?.role === "User";
-      // }
+      if (req.nextUrl.pathname === "/admin/leads") {
+        return token?.role === 1 || token?.role === 2 || token?.role === 4;
+      }
 
-      // `/dashboard` only requires the user to be logged in
+      if (req.nextUrl.pathname === "/admin/user") {
+        return token?.role === 1 || token?.role === 2;
+      }
+
+      if (
+        req.nextUrl.pathname === "/admin/add-user" ||
+        req.nextUrl.pathname.match(/^\/admin\/edit-user\/.+$/)
+      ) {
+        return token?.role === 1;
+      }
+
+      // if (req.nextUrl.pathname.match(/^\/admin\/edit-user\/.+$/)) {
+      //   return token?.role === 1;
+      // }
 
       return !!token;
     },
@@ -53,5 +58,15 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/user", "/dashboard", "/users", "/add-user", "/edit/:path*"],
+  matcher: [
+    "/admin/dashboard",
+    "/admin/add-blog",
+    "/admin/blog",
+    "/admin/edit-blog/:path*",
+    "/admin/view-blog/:path*",
+    "/admin/user",
+    "/admin/add-user",
+    "/admin/edit-user/:path*",
+    "/admin/leads",
+  ],
 };
